@@ -1,0 +1,57 @@
+<div class="dropdown">
+  <button
+    class="dropdown-toggle"
+    [ngClass]="{ 'dropdown-toggle-closed': !rootItem.isOpen }"
+    (click)="toggleDropdown()"
+  >
+    <label>
+      <input
+        type="checkbox"
+        [indeterminate]="rootItem.isIndeterminate"
+        (change)="onRootChanged(rootItem)"
+        [(ngModel)]="rootItem.isChecked"
+        [hidden]="true"
+      />
+      <span></span>
+    </label>
+    {{ rootItem.label }}
+  </button>
+  @if (rootItem.isOpen) {
+  <ul class="dropdown-menu">
+    @for (item of rootItem.children; track $index) {
+    <li class="dropdown-item has-children">
+      <div (click)="toggleSubmenu(item)">
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="item.isChecked"
+            [indeterminate]="item.isIndeterminate"
+            (change)="onCategoryChanged(item)"
+            [hidden]="true"
+          />
+          <span></span>
+        </label>
+        {{ item.label }}
+      </div>
+      @if (item.isOpen) {
+      <ul class="dropdown-submenu">
+        @for (child of item.children; track $index) {
+        <li class="dropdown-item">
+          <label>
+            <input
+              type="checkbox"
+              [(ngModel)]="child.isChecked"
+              (change)="regulateAllNodes()"
+            />
+            <span></span>
+            {{ child.label }}
+          </label>
+        </li>
+        }
+      </ul>
+      }
+    </li>
+    }
+  </ul>
+  }
+</div>
